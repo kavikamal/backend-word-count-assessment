@@ -38,7 +38,7 @@ print_words() and print_top().
 """
 
 import sys
-
+from collections import OrderedDict
 
 # +++your code here+++
 # Define print_words(filename) and print_top(filename) functions.
@@ -65,10 +65,14 @@ def main():
     sys.exit(1)
 
 def print_words(filename): 
-  print (word_count(filename,'all'))
+    d = word_count(filename,'all')
+    for k,v in d.items():
+        print k,' - ',v
 
 def print_top(filename):
-    print (word_count(filename,'top'))  
+    d = word_count(filename,'top')
+    for k,v in d.items():
+        print k,' - ',v 
 
 def word_count(filename,cond):
     f=open(filename,'r+')
@@ -85,10 +89,9 @@ def word_count(filename,cond):
           else:
             words_dict[word] = 1 
     if cond=='all':
-      d = sorted((key,value) for (key,value) in words_dict.items()) 
+      d = OrderedDict(sorted(words_dict.items(), key=lambda x: x[0])) 
     else:
-      d = sorted(words_dict.items(), key=lambda x: x[1], reverse=True)
-      d = d[:20]         
+      d = OrderedDict(sorted(words_dict.items(), key=lambda x: x[1], reverse=True))        
     return d
 
 if __name__ == '__main__':
